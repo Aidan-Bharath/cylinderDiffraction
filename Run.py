@@ -10,25 +10,26 @@ This is an example run Script.
 import meiDiffPolar as wf
 import gridGeneration as gg
 import gridPlot as gp
+import auxFunc as aux
 
 
 
 if __name__ == "__main__":
     
-    tankR = 110
+    tankR = 10
     cylR = 1
-    k = 5
-    A = 2
+    wl = 2
+    k = aux.K(wl)
+    A = 0.01
     w = 4
     t = 5
-    n = 10
+    n = 50
     
-    r,o = gg.grid(tankR,resolution=100)
+       
+    r,o = gg.grid(tankR,cylR,resolution=100)
      
-    
     wavefield = wf.waveField(k,r,o,cylR,A,w,t,n)
-    print wavefield[2].shape
-    
-    gp.WFplot(r,o,wavefield[2])
+        
+    gp.WFplot(r,o,cylR,wavefield[1])
 
 

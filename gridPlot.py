@@ -9,16 +9,18 @@ plot the resulting wavefield.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import auxFunc as aux
 
 __all__ = ['WFplot']
 
-def WFplot(r,o,griddata):
+def WFplot(r,o,cylR,griddata):
     
-
-    griddata[np.isnan(griddata)] = 0
-    griddata[griddata>10],griddata[griddata<-10] = 0,0
-   
+    x,y = aux.polToCart(r,o)
+    cut = np.argwhere([np.sqrt(x**2+y**2) <= cylR])
+    print x.shape,y.shape    
+    print cut.shape
     
-    fig, ax = plt.subplots(subplot_kw=dict(projection='polar'))
-    ax.contourf(np.rad2deg(o),r, np.real(griddata))
-    plt.show()
+    fig = plt.figure()    
+    plt.contourf(x,y, np.real(griddata))
+    plt.colorbar()
+    #plt.show()
