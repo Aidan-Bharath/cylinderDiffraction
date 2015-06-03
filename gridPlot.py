@@ -16,11 +16,8 @@ __all__ = ['WFplot']
 def WFplot(r,o,cylR,griddata):
     
     x,y = aux.polToCart(r,o)
-    cut = np.argwhere([np.sqrt(x**2+y**2) <= cylR])
-    print x.shape,y.shape    
-    print cut.shape
-    
+       
     fig = plt.figure()    
     plt.contourf(x,y, np.real(griddata))
     plt.colorbar()
-    #plt.show()
+    plt.show()
