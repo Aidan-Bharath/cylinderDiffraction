@@ -102,7 +102,7 @@ def waveField(k,r,o,o_,a,A,w,t,n):
     W = np.vectorize(phase)    
     kP = W(ki+ks)
     
-    return (kTot,kA,ki,ks,kt,kP,x,y)
+    return (kA,kP,kTot,ki,ks,kt,x,y)
     
     
 
