@@ -61,6 +61,10 @@ def cp(wl,h):
     
 def polToCart(r,o):
     return r*np.cos(o),r*np.sin(o)
+
+def cartToPol(x,y):
+    ## Watch this returns negative values below x axis
+    return [np.sqrt(x**2+y**2),np.arctan(y/x)]
     
 def f(wl,h):
     return 1/T(wl,h)

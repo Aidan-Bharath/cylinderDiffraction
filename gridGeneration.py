@@ -9,11 +9,12 @@ Fields around a single cylinder.
 """
 
 import numpy as np
+import auxFunc as aux
 
 __all__ = ['grid']
 
 
-def grid(r,cylR,resolution = 100):
+def grid(r,cylR,resolution = 250):
     """
     Thsi just generates the meshgrid of points needed for Calculations
     """
@@ -23,5 +24,17 @@ def grid(r,cylR,resolution = 100):
     rMatrix,oMatrix = np.meshgrid(r,o)
 
     return rMatrix,oMatrix
+    
+def multigrid(r,resolution = 250):
+    """
+    Thsi just generates the meshgrid of points needed for Calculations
+    """
+    
+    r = np.linspace(0,r,resolution)
+    o = np.linspace(0,2*np.pi,resolution)
+    rMatrix,oMatrix = np.meshgrid(r,o)
+    x,y = aux.polToCart(rMatrix,oMatrix)
+
+    return [rMatrix,oMatrix,x,y]
     
     
