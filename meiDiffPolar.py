@@ -12,6 +12,8 @@ following Mei.
 """
 from __future__ import division
 import numpy as np
+import auxFunc as aux
+import cmath as cm
 import scipy.special as spec
 
 __all__ = ['waveField']
@@ -38,6 +40,11 @@ def im(n):
     else:
         return 1
 
+def phase(x):
+    return cm.phase(x)
+    
+def complexArray(x,k,w,t):
+    return complex(np.cos(k*x-w*t),np.sin(k*x-w*t)) 
 
 def Bescoef(k,r,a,n):
     """
@@ -52,12 +59,12 @@ def Bescoef(k,r,a,n):
     """
     
     kr , ka = k*r , k*a  
-    coef = spec.jv(n,kr)-(spec.jvp(n,ka,n=1)/spec.h1vp(n,ka,n=1))*spec.hankel1(n,kr)
+    coef = -(spec.jvp(n,ka,n=1)/spec.h1vp(n,ka,n=1))*spec.hankel1(n,kr)
     
     return coef
     
     
-def waveField(k,r,o,a,A,w,t,n):
+def waveField(k,r,o,o_,a,A,w,t,n):
     """
     Calculates the sum of both incident and scattering wave amplitudes for
     a given geometry and position in polar coord r.
@@ -72,13 +79,30 @@ def waveField(k,r,o,a,A,w,t,n):
     n - number of terms to include in the summation.
     
     """
-    wave = [eps(i)*im(i)*Bescoef(k,r,a,i)*np.cos(i*o) for i in xrange(n)] 
+    wave = [eps(i)*im(i)*Bescoef(k,r,a,i)*np.cos(i*(o-o_)) for i in xrange(n)] 
     wave = np.sum(np.array(wave),axis=0)
     
-    ki = A*wave
-    ks = A*(complex(np.cos(w*t),np.sin(w*t)))*wave
+    """
+    Get Cart Coordinates
+    """    
+    x,y = aux.polToCart(r,o-o_)    
     
-    return (ki,ks,ki+ks)
+    """
+    Vectorize Complex Functions
+    """    
+    W = np.vectorize(phase)
+    CompInc = np.vectorize(complexArray)
+    
+    ks = A*wave
+    ki = A*CompInc(x,k,w,t) 
+    kTot = ki+ks
+    kt = kTot*complex(np.cos(w*t),np.sin(w*t))
+    kA = np.abs(kTot)
+    
+    W = np.vectorize(phase)    
+    kP = W(ki+ks)
+    
+    return (kA,kP,kTot,ki,ks,kt,x,y)
     
     
 
