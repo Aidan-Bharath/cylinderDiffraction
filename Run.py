@@ -24,11 +24,9 @@ if __name__ == "__main__":
     n = 10
     
     r,o = gg.grid(tankR,resolution=100)
-     
     
     wavefield = wf.waveField(k,r,o,cylR,A,w,t,n)
-    print wavefield[2].shape
-    
+       
     gp.WFplot(r,o,wavefield[2])
 
 
