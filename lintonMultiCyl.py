@@ -29,7 +29,6 @@ def H(k,r,n):
 def I(x,y,B,k):
     """
     I for all k
-    
     """
     expon = k*(x*np.cos(B)+y*np.sin(B))
     return complex(expon,expon)
@@ -67,4 +66,4 @@ if __name__ == "__main__":
     cylR = [0.5,0.2]
     cylCart = np.array([[1,1],[2,-1]])
     cylRad = radConv(cylCart)
-    print (-Iv(cylCart[0,:],cylCart[1,:],B,K)*solExp(m,B)[:,None]).flatten().shape
+    print (-Iv(cylCart[0,:],cylCart[1,:],B,K)*solExp(m,B)[:,None]).shape

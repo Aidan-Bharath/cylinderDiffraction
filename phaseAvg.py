@@ -39,6 +39,7 @@ def reflectCalc(Dict,wl,d,wallDist,start,T):
     maxDist = inlet - 4*cp
     stop = (inlet + 4*refl-maxDist)/cp
     stop = start+T*np.floor((stop-start)/T)
+    print stop
     
     ### temporary due to files    
     

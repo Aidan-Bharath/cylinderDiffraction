@@ -34,7 +34,7 @@ def pAmpPlot(data,st,wl,h,tank):
 
     grid = data['grid']
     pAmp = pa.surfacePhase(data,st,wl,h,tank)
-    levels = np.linspace(0.5,0.51,100,endpoint=True)
+    levels = np.linspace(0.5,0.52,100,endpoint=True)
     
     plt.figure()    
     #plt.contour(grid[0,1:,1:],grid[1,1:,1:],pAmp[1][1:,1:],colors='k'
@@ -77,29 +77,29 @@ def RMSPlot(pA,wF,x,y):
     
 if __name__ == "__main__":
     
-    Dir = '/home/aidan/starCCM/data/RInviscid/surfData.p'
-    dic = pd.read_pickle(Dir)
+    Dir = '/home/aidan/starCCM/data/symtank/wl810so/surfData.p'
+    #dic = pd.read_pickle(Dir)
+    
    
     time = 22.5  
     pos = 'Position[Z] (m)'
-    
+    rawPlot(dic,30.25,pos)
     data = ac.centShift(Dir,-20,-20)    
     
    
     rx = [-15,15]
     ry = [-10,10]
-    wl = 4
+    wl = 8
     k = aux.K(wl)
     tankR = 20
     cylR = 1
     r,o = gg.grid(tankR,cylR,resolution=250)
     o_ = 0    
-    A = 0.01    
-    start = 14
-    wl = 4
+    A = 0.015    
+    start = 16
     h = 0.5
-    tank = [19,19]    
-    pAmpPlot(dic,start,wl,h,tank)
+    tank = [29,29]    
+    #pAmpPlot(dic,start,wl,h,tank)
         
     #gData = ac.gridSlice(data,rx,ry,k,r,o,o_,cylR,A,h,start,tank)
     
