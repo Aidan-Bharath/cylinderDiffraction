@@ -73,13 +73,31 @@ def f_B(B,R,h):
     """
     Runs off of the shallow water approx for wavelength
     """
-    f = (B*1.004)/(4*R**2*999.97)
+    v = 1.002*10**(-3)
+    rho = 999.97
+    f = (B*v)/(4*R**2*rho)
     return np.sqrt(9.81*h)/f
     
 def A_Kc(Kc,R):
     return (Kc*R)/np.pi
+    
+def d(f):
+    v = 1.002*10**(-3)
+    rho = 999.97
+    return np.sqrt((v)/(np.pi*f*rho))
+    
+def A(f):
+    return 7*d(f)    
+    
+def Kc(A,R):
+    return np.pi*(A/R)
+
+def B(f,R):
+    return (4/np.pi)*(R/d(f))**2
+    
+    
 
 if __name__ == "__main__":
     
-    print f_B(4000,1,0.5)
+    print f_B(60,1,0.5)
     print A_Kc(0.05,1)
