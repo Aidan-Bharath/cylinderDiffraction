@@ -49,8 +49,7 @@ def reflectCalc(Dict,wl,d,wallDist,start,T):
 
 def surfacePhase(data,start,wl,d,wallDist):
     T = aux.T(wl,d)    
-    #data = pd.read_pickle(File)
-   
+       
     
     mag,stop = reflectCalc(data,wl,d,wallDist,start,T) 
     
@@ -81,6 +80,7 @@ def surfacePhase(data,start,wl,d,wallDist):
     pAvg = np.delete(pAvg,[0,0,0],axis=2)
     pAmp = pAvg.max(axis=2)
         
+    
     return [pAvg,pAmp,mag]
 
 def surfPhase(data,x,y,wl,A,h):
@@ -103,10 +103,10 @@ def surfPhase(data,x,y,wl,A,h):
     
 if __name__ == "__main__":
     
-    Dir = '/home/aidan/starCCM/data/inviscid/'
+    Dir = '/media/aidan/Seagate Expansion Drive/starCCM/symtank/wl6/'
     File = 'surfData.p'
     
     #data = seriesPhase(Dir+File,3,4,0.5,5)
-    data = surfacePhase(Dir+File,10,4,0.5,[19,19])
+    data = surfacePhase(Dir,File,10,4,0.5,[19,29])
     #wave = surfPhase(2,1,1,4,0.01,0.5)
     

@@ -6,6 +6,7 @@ Created on Sat Apr 04 03:17:15 2015
 """
 from __future__ import division
 import numpy as np
+import scipy.optimize as spo
 import re
 import matplotlib.pyplot as plt
 
@@ -40,12 +41,20 @@ def dicDFSlice(dic,time):
         
     return dic
     
-def pVel(wl,h):
+def dispR(wl,h):
     return np.sqrt(9.81*K(wl)*np.tanh(K(wl)*h))
     
 def T(wl,h):
-    return (2*np.pi)/pVel(wl,h)
+    return (2*np.pi)/dispR(wl,h)
     
+def K_o(f,h,disp=True):
+    if disp:
+        o = np.pi*2*f
+        k_ = o**2/9.807        
+        dispR = lambda k: -o**2 + 9.807*k*np.tanh(k*h)
+        k = spo.fsolve(dispR,k_)
+    return k
+
 def K(wl):
     return 2*np.pi/wl
 
@@ -99,5 +108,5 @@ def B(f,R):
 
 if __name__ == "__main__":
     
-    print f_B(60,1,0.5)
-    print A_Kc(0.05,1)
+    #print f_B(60,1,0.5)
+    print (2*np.pi)/K_o(0.8,1.5)

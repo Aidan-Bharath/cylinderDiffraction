@@ -27,17 +27,17 @@ def kcBPlot(f,B,r1):
     plt.ylabel('Kc (Amplitude Parameter)')    
     plt.title('2D Flow Separation for Various Radius Cylinders \n'
         +'Frequency Range '+str(f.min())+' < f < '+str(f.max())+' \n'
-        +'Max Amplitude shown = 0.038 m')
+        +'Max Amplitude shown = '+str(amp.max())+' m')
     plt.show()
     
 
 if __name__ == "__main__":
     
-    r = [0.08,0.16,0.20,0.3,0.5]
-    f = np.linspace(0.2,0.8,100)
+    r = [0.08,0.16]
+    f = np.linspace(0.1,1.2,100)
     B = aux.B(f,r[0])
     
-    print aux.A_Kc(1,r[4])
+    print aux.A_Kc(1,r[0])
     
     
     kcBPlot(f,B,r)

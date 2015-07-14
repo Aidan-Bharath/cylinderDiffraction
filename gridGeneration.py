@@ -14,7 +14,7 @@ import auxFunc as aux
 __all__ = ['grid']
 
 
-def grid(r,cylR,resolution = 250):
+def grid(r,cylR,resolution = 350):
     """
     Thsi just generates the meshgrid of points needed for Calculations
     """

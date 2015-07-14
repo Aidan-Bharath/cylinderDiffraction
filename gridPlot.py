@@ -8,24 +8,32 @@ plot the resulting wavefield.
 """
 
 import numpy as np
-import matplotlib as cm
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import auxFunc as aux
-import seaborn 
+#import seaborn 
 
 __all__ = ['WFplot']
 
 def WFplot(r,o,cylR,griddata):
     
+    
     x,y = aux.polToCart(r,o)
-    levels = np.linspace(0.0015,0.018,50,endpoint=True)
-       
+    levels = np.linspace(0.0015,0.018,60,endpoint=True)
+    
+    mpl.rc('text', usetex=True)
+    mpl.rc('axes', linewidth=2)
+    mpl.rc('font', weight='bold')
+
+    mpl.rcParams['text.latex.preamble'] = [r'\usepackage{sfmath} \boldmath']
+    
     plt.figure()    
-    plt.contourf(x,y, np.real(griddata),levels=levels)
-    plt.title('Analytical Solution for Amplitudes')
+    
+    plt.contourf(x,y, np.real(griddata),levels=levels,cmap=plt.cm.jet)
+    plt.title('Amplitudes')
     plt.xlabel('X (m)')
     plt.ylabel('Y (m)')
     cbar = plt.colorbar()
-    cbar.set_label('Amplitudes' ,rotation=270,labelpad=10)
-     
+    cbar.set_label('Amplitudes (m)' ,rotation=270,labelpad=18)
+    plt.grid()
     plt.show()

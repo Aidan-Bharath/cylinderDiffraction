@@ -45,6 +45,12 @@ def phase(x):
     
 def complexArray(x,k,w,t):
     return complex(np.cos(k*x-w*t),np.sin(k*x-w*t)) 
+    
+def forceFO(k,A,h,cylR):
+    rho = 999.97
+    g = 9.81
+    
+    return (4*rho*g*A*np.tanh(k*h))/(k**2*spec.h1vp(1,k*cylR))
 
 def Bescoef(k,r,a,n):
     """
@@ -108,4 +114,6 @@ def waveField(k,r,o,o_,a,A,w,t,n):
 
 if __name__ == "__main__":
     
-    print waveField(4,2,3,1,2,2.5,4,10)
+    #print waveField(4,2,3,1,2,2.5,4,10)
+    f = forceFO(aux.K(6),0.01,0.5,1)
+    print np.sqrt(f*f.conjugate())
