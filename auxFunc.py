@@ -104,9 +104,15 @@ def Kc(A,R):
 def B(f,R):
     return (4/np.pi)*(R/d(f))**2
     
+def courant(wl,t,A,h,x=0,y=0,z=0):
+    return (dispR(wl,h)*t/2)*((K(wl)*x*A)/np.pi+(K(wl)*y*A)/np.pi+z)
+    
     
 
 if __name__ == "__main__":
     
     #print f_B(60,1,0.5)
-    print (2*np.pi)/K_o(0.8,1.5)
+    f = np.array([0.2,0.3,0.4,0.5,0.6,0.7,0.8])    
+    print B(f,0.315/2)
+    A = np.array([0.01,0.025,0.05,0.075,0.1])
+    print Kc(A,0.315/2)

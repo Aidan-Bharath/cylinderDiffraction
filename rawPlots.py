@@ -11,6 +11,8 @@ import numpy as np
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import auxFunc as aux
 import phaseAvg as pa
 import gridGeneration as gg
@@ -68,7 +70,37 @@ def pAmpPlot(data,st,wl,h,A,tank):
     cbar.set_label('Relative Amplitudes' ,rotation=270,labelpad=10)
     plt.show()
     
+def pAmpVPlot(data,st,wl,h,A,tank):
+    mpl.rc('text', usetex=True)
+    mpl.rc('axes', linewidth=2)
+    mpl.rc('font', weight='bold')
+    mpl.rcParams['text.latex.preamble'] = [r'\usepackage{sfmath} \boldmath']
+   
+    grid = data['grid']
+    pAmp = pa.surfacePhase(data,st,wl,h,tank)
+    pAmpM = pAmp[0].mean(axis=2)/pAmp[1].max()
+    idx = rmCyl(grid,[20,0],1)
+#    levels = np.linspace(0,70,100,endpoint=True)
+#    pAmp[1][pAmp[1]>=levels.max()] = levels.max()
+    for i in xrange(len(idx[:,0])):
+        pAmp[1][int(idx[i,0]), int(idx[i,1])] = np.nan
+   
     
+   
+    plt.figure()    
+    #plt.contour(grid[0,1:,1:],grid[1,1:,1:],pAmp[1][1:,1:],colors='k'
+    #    ,linewidth=0.1)
+    plt.contourf(grid[0,1:,1:],grid[1,1:,1:],pAmp[1][1:,1:]
+        ,levels=levels,cmap=plt.cm.jet)
+    plt.title('CFD Phase Averaged Vorticity Magintudes')
+    plt.xlabel('X (m)')
+    plt.xlim(0,40)
+    plt.ylabel('Y (m)')
+    plt.ylim(0,15)
+    cbar = plt.colorbar()
+    cbar.set_label(r'Vorticity Magnitude ((s^{-1})' ,rotation=270,labelpad=10)
+    plt.show()
+        
 def RMSPlot(pA,wF,x,y):
         
     sd = wF-pA
@@ -113,12 +145,43 @@ def tsSurface(dic,pos,place):
     plt.show()
         
     return 
+    
+def CflPlot(wl,A,t,x,z,h):
+    
+    mpl.rc('text', usetex=True)
+    mpl.rc('axes', linewidth=2)
+    mpl.rc('font', weight='bold')
+    mpl.rcParams['text.latex.preamble'] = [r'\usepackage{sfmath} \boldmath']
+       
+    levels = np.linspace(0,0.06,100,endpoint=True)
+    w = aux.dispR(wl,h)
+    x = np.linspace(x[0],x[1],100)
+    z = np.linspace(z[0],z[1],100)
+    x, z = np.meshgrid(x,z)
+    
+    cfl = (w*t/2)*(k*x*A/np.pi+z)
+    
+   
+    
+    plt.figure()    
+    plt.contour(x,z,cfl,colors='k',linewidth=0.1)
+    plt.contourf(x,z,cfl,levels=levels,cmap=plt.cm.jet)
+    plt.title('C_{FL} Numbers')
+    plt.xlabel('X Cells')
+    
+    plt.ylabel('Z Cells')
+    
+    cbar = plt.colorbar()
+    cbar.set_label('C_{FL} Number' ,rotation=270,labelpad=10)
+    plt.show()
+   
        
 if __name__ == "__main__":
 #    
-#    Dir = '/media/aidan/Seagate Expansion Drive/starCCM/symtank/wl810so/'
-#    files = 'surfData.p'
-#    dic = pd.read_pickle(Dir+files)
+    Dir = '/media/aidan/Seagate Expansion Drive/starCCM/symtank/wl6/'
+    files = 'surfData.p'
+    dic = pd.read_pickle(Dir+files)
+    print 'done load'
     
    
     #time = sorted(dic.keys())[-100]
@@ -130,18 +193,18 @@ if __name__ == "__main__":
    
     rx = [-15,15]
     ry = [-10,10]
-    wl = 8
+    wl = 6
     k = aux.K(wl)
     tankR = 20
     cylR = 1
     r,o = gg.grid(tankR,cylR,resolution=250)
     o_ = 0    
-    A = 0.015    
-    start = 22
+    A = 0.01    
+    start = 20
     h = 0.5
     tank = [19,29]    
-    pAmpPlot(dic,start,wl,h,A,tank)
-        
+    pAmpVPlot(dic,start,wl,h,A,tank)
+    #CflPlot(wl,A,0.001,[10,70],[5,40],h)   
     #gData = ac.gridSlice(data,rx,ry,k,r,o,o_,cylR,A,h,start,tank)
     
     #RMSPlot(gData[0],gData[1],gData[2],gData[3])

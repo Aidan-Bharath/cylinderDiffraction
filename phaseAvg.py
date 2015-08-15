@@ -48,8 +48,12 @@ def reflectCalc(Dict,wl,d,wallDist,start,T):
         
 
 def surfacePhase(data,start,wl,d,wallDist):
+    """
+    This is geared only for surface elevation.... Damn
+    """
+
     T = aux.T(wl,d)    
-       
+    sets = 1
     
     mag,stop = reflectCalc(data,wl,d,wallDist,start,T) 
     
@@ -69,7 +73,7 @@ def surfacePhase(data,start,wl,d,wallDist):
         for keys,data in phased.iteritems():
                        
             try:
-                build = np.dstack((build,data[sorted(data.keys())[times]].values()[0]))
+                build = np.dstack((build,data[sorted(data.keys())[times]].values()[sets]))
             except IndexError:
                 pass
      
@@ -103,10 +107,10 @@ def surfPhase(data,x,y,wl,A,h):
     
 if __name__ == "__main__":
     
-    Dir = '/media/aidan/Seagate Expansion Drive/starCCM/symtank/wl6/'
+    Dir = '/media/aidan/Seagate Expansion Drive/starCCM/channelData/amp10cm/t2/'
     File = 'surfData.p'
     
     #data = seriesPhase(Dir+File,3,4,0.5,5)
-    data = surfacePhase(Dir,File,10,4,0.5,[19,29])
+    data = surfacePhase(Dir,File,10,4,1.5,[19,29])
     #wave = surfPhase(2,1,1,4,0.01,0.5)
     
